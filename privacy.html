@@ -1,0 +1,267 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacybeleid — On Tour</title>
+<meta name="description" content="Welke gegevens On Tour verzamelt, waarom, en hoe je ze weer kwijtraakt.">
+<style>
+  :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  :root {
+    --bg: #ffffff;
+    --bg-elevated: #F0F0F3;
+    --bg-selected: #E0E1E6;
+    --text: #474554;
+    --text-secondary: #60646C;
+    --accent: #D9480F;
+    --accent-text: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #000000;
+      --bg-elevated: #212225;
+      --bg-selected: #2E3135;
+      --text: #ffffff;
+      --text-secondary: #B0B4BA;
+      --accent: #FF7A45;
+      --accent-text: #000000;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #000000;
+    --bg-elevated: #212225;
+    --bg-selected: #2E3135;
+    --text: #ffffff;
+    --text-secondary: #B0B4BA;
+    --accent: #FF7A45;
+    --accent-text: #000000;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  h1, h2, .display {
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif;
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  header.top {
+    border-bottom: 1px solid var(--bg-selected);
+    padding-block: 16px;
+  }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: "Baloo 2", sans-serif; font-weight: 800; font-size: 18px; text-decoration: none; color: var(--text); }
+  .brand svg { display: block; }
+  header.top a.back { font-size: 14px; font-weight: 600; color: var(--text-secondary); text-decoration: none; }
+  header.top a.back:hover { color: var(--accent); }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+  .layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 56px;
+    padding-block: 44px 80px;
+  }
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  aside {
+    position: sticky;
+    top: calc(env(safe-area-inset-top, 0px) + 88px);
+    align-self: start;
+    font-size: 14px;
+  }
+  aside .updated { color: var(--text-secondary); font-size: 13px; margin-bottom: 18px; }
+  aside nav a {
+    display: block;
+    padding: 6px 0;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    padding-left: 12px;
+    margin-left: -13px;
+  }
+  aside nav a:hover { color: var(--text); }
+  @media (max-width: 820px) {
+    aside { position: static; }
+    aside nav { display: none; }
+  }
+
+  main h1 { font-size: clamp(30px, 4.6vw, 40px); margin: 0 0 8px; }
+  main > .lead { color: var(--text-secondary); font-size: 17px; max-width: 62ch; line-height: 1.55; margin-bottom: 40px; }
+
+  section.policy-section { max-width: 68ch; margin-bottom: 40px; scroll-margin-top: 90px; }
+  section.policy-section h2 {
+    font-size: 21px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  section.policy-section h2 .n { color: var(--accent); font-variant-numeric: tabular-nums; }
+  section.policy-section p, section.policy-section li { font-size: 15.5px; line-height: 1.65; }
+  section.policy-section p + p { margin-top: 12px; }
+  section.policy-section ul { padding-left: 22px; margin: 12px 0 0; display: flex; flex-direction: column; gap: 8px; }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 14.5px;
+  }
+  table.data-table th, table.data-table td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--bg-selected);
+    vertical-align: top;
+  }
+  table.data-table th { color: var(--text-secondary); font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; }
+  .table-scroll { overflow-x: auto; }
+
+  .callout {
+    background: var(--bg-elevated);
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-top: 16px;
+  }
+  .callout strong { color: var(--accent); }
+
+  footer {
+    border-top: 1px solid var(--bg-selected);
+    padding-block: 24px calc(24px + env(safe-area-inset-bottom, 0px));
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <svg width="26" height="26" viewBox="0 0 30 30" fill="none">
+        <rect width="30" height="30" rx="9" fill="var(--accent)"/>
+        <path d="M15 7c-3.6 0-6.4 2.8-6.4 6.2 0 4.6 6.4 10.3 6.4 10.3s6.4-5.7 6.4-10.3C21.4 9.8 18.6 7 15 7Z" fill="var(--accent-text)"/>
+        <circle cx="15" cy="13.2" r="2.3" fill="var(--accent)"/>
+      </svg>
+      On Tour
+    </a>
+    <a class="back" href="index.html">← Terug naar de site</a>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <aside>
+    <div class="updated">Laatst bijgewerkt<br>28 september 2026</div>
+    <nav>
+      <a href="#wie">1. Wie zijn wij</a>
+      <a href="#gegevens">2. Welke gegevens</a>
+      <a href="#waarvoor">3. Waarvoor</a>
+      <a href="#delen">4. Met wie delen we het</a>
+      <a href="#bewaren">5. Bewaartermijn</a>
+      <a href="#rechten">6. Jouw rechten</a>
+      <a href="#achtergrond">7. Locatie op de achtergrond</a>
+      <a href="#kinderen">8. Kinderen</a>
+      <a href="#wijzigingen">9. Wijzigingen</a>
+      <a href="#contact">10. Contact</a>
+    </nav>
+  </aside>
+
+  <main>
+    <h1>Privacybeleid</h1>
+    <p class="lead">On Tour is een kaart-app om te zien waar je vrienden zijn en spontaan af te spreken. Dat werkt alleen met locatiegegevens — dit beleid legt precies uit welke, waarom, en wat jij daarover te zeggen hebt.</p>
+
+    <section class="policy-section" id="wie">
+      <h2><span class="n">1</span> Wie zijn wij</h2>
+      <p>On Tour wordt gemaakt en beheerd door één ontwikkelaar (geen bedrijf met meerdere medewerkers). Voor alle vragen over dit beleid of je gegevens: zie <a href="#contact">Contact</a> onderaan deze pagina.</p>
+    </section>
+
+    <section class="policy-section" id="gegevens">
+      <h2><span class="n">2</span> Welke gegevens verzamelen we</h2>
+      <p>Alleen wat nodig is om de app te laten werken:</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Soort</th><th>Wat precies</th></tr></thead>
+          <tbody>
+            <tr><td>Account</td><td>E-mailadres, naam, bio, profiel- en headerfoto, voertuigtype</td></tr>
+            <tr><td>Locatie</td><td>GPS-positie, snelheid, richting en batterijpercentage — ook op de achtergrond als je dat aanzet</td></tr>
+            <tr><td>Groepen</td><td>Welke groepen je zit, wie erin zit, meetups en je "vrij"/"bezig"-status</td></tr>
+            <tr><td>Voortgang</td><td>Afgelegde kilometers, behaalde prestaties, streaks, level/XP</td></tr>
+            <tr><td>Apparaat</td><td>Een pushmeldingen-token, zodat we je een melding kunnen sturen</td></tr>
+            <tr><td>Abonnement</td><td>Of je Premium hebt (er is nog geen betaalfunctie in de app — dit wordt vooralsnog handmatig ingesteld)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="policy-section" id="waarvoor">
+      <h2><span class="n">3</span> Waarvoor gebruiken we dit</h2>
+      <ul>
+        <li>Je op de kaart laten zien aan groepsgenoten, en hen aan jou</li>
+        <li>Kilometers, records, streaks en prestaties bijhouden en tonen</li>
+        <li>Pushmeldingen sturen: een vriend dichtbij en vrij, bijna-lege batterij van een groepsgenoot, een nieuwe meetup</li>
+        <li>De ranglijst per groep berekenen</li>
+      </ul>
+      <p>Nooit voor advertenties, en nooit verkocht aan derden.</p>
+    </section>
+
+    <section class="policy-section" id="delen">
+      <h2><span class="n">4</span> Met wie delen we het</h2>
+      <p>Je locatie en profiel zijn alleen zichtbaar voor mensen in dezelfde groep(en) als jij — en alleen zolang je locatie delen aan staat. Daarnaast werken deze verwerkers voor ons, puur om de app te laten draaien:</p>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Partij</th><th>Rol</th></tr></thead>
+          <tbody>
+            <tr><td>Supabase</td><td>Database, inloggen en opslag van foto's</td></tr>
+            <tr><td>Expo / Google (Firebase)</td><td>Versturen van pushmeldingen</td></tr>
+            <tr><td>MapTiler</td><td>Kaarttegels die getoond worden — zij ontvangen de kaartsectie die je bekijkt, niet je exacte GPS-punt</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="policy-section" id="bewaren">
+      <h2><span class="n">5</span> Bewaartermijn</h2>
+      <p>Zolang je account bestaat, bewaren we je gegevens — inclusief je locatiegeschiedenis per dag, want die voedt je jaaroverzicht en persoonlijke records. Verwijder je je account (zie <a href="#rechten">Jouw rechten</a>), dan verwijderen we alles wat aan jou te herleiden is.</p>
+    </section>
+
+    <section class="policy-section" id="rechten">
+      <h2><span class="n">6</span> Jouw rechten</h2>
+      <p>Je hebt altijd recht op inzage, correctie en verwijdering van je gegevens. De app heeft nog geen "verwijder mijn account"-knop — mail ons via <a href="#contact">het contactadres</a> en we verwijderen je account en gegevens handmatig, meestal binnen enkele dagen.</p>
+    </section>
+
+    <section class="policy-section" id="achtergrond">
+      <h2><span class="n">7</span> Locatie op de achtergrond</h2>
+      <p>On Tour kan optioneel ook op de achtergrond je locatie blijven delen, zodat vrienden je nog zien als je scherm uit staat. Dit staat los van "gewoon de app open hebben" en vraagt een aparte toestemming van je telefoon.</p>
+      <div class="callout">Je kunt dit op elk moment <strong>pauzeren</strong> vanuit de app zelf, of helemaal uitzetten via de locatie-instellingen van je telefoon.</div>
+    </section>
+
+    <section class="policy-section" id="kinderen">
+      <h2><span class="n">8</span> Kinderen</h2>
+      <p>On Tour is niet bedoeld voor kinderen onder de 16 jaar. Vermoed je dat een kind onder de 16 een account heeft aangemaakt? Laat het ons weten via het contactadres, dan verwijderen we het account.</p>
+    </section>
+
+    <section class="policy-section" id="wijzigingen">
+      <h2><span class="n">9</span> Wijzigingen in dit beleid</h2>
+      <p>Verandert er iets wezenlijks aan hoe we met je gegevens omgaan, dan werken we deze pagina bij en passen we de datum bovenaan aan.</p>
+    </section>
+
+    <section class="policy-section" id="contact">
+      <h2><span class="n">10</span> Contact</h2>
+      <p>Vragen, verzoeken tot inzage of verwijdering: <a href="mailto:hallo@ontour.rlode.nl">hallo@ontour.rlode.nl</a></p>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">&copy; 2026 On Tour</div>
+</footer>

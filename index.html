@@ -1,0 +1,474 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>On Tour</title>
+<meta name="description" content="Zie live waar je vrienden zijn, spreek spontaan af, en verdien XP voor elke kilometer.">
+<style>
+  :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  :root {
+    --bg: #ffffff;
+    --bg-elevated: #F0F0F3;
+    --bg-selected: #E0E1E6;
+    --text: #474554;
+    --text-secondary: #60646C;
+    --accent: #D9480F;
+    --accent-text: #ffffff;
+    --shadow: 0 2px 5px rgba(71, 69, 84, 0.12);
+    --shadow-lg: 0 18px 40px rgba(71, 69, 84, 0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #000000;
+      --bg-elevated: #212225;
+      --bg-selected: #2E3135;
+      --text: #ffffff;
+      --text-secondary: #B0B4BA;
+      --accent: #FF7A45;
+      --accent-text: #000000;
+      --shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #000000;
+    --bg-elevated: #212225;
+    --bg-selected: #2E3135;
+    --text: #ffffff;
+    --text-secondary: #B0B4BA;
+    --accent: #FF7A45;
+    --accent-text: #000000;
+    --shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Manrope", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, .display {
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif;
+    font-weight: 700;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0; }
+  a { color: inherit; }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-inline: 20px;
+  }
+
+  /* ---------- Nav ---------- */
+  nav.top {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--bg-selected);
+  }
+  nav.top .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 14px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+  }
+  .brand svg { display: block; }
+  nav.top .nav-links {
+    display: flex;
+    gap: 28px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  nav.top .nav-links a { text-decoration: none; color: var(--text-secondary); }
+  nav.top .nav-links a:hover { color: var(--accent); }
+  @media (max-width: 640px) {
+    nav.top .nav-links { display: none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding-block: 76px 64px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: -20% -10% auto -10%;
+    height: 480px;
+    background: radial-gradient(60% 60% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+    pointer-events: none;
+  }
+  .hero .wrap { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-elevated);
+    border-radius: 100px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+  .eyebrow b { color: var(--accent); }
+  .hero h1 {
+    font-size: clamp(38px, 6.4vw, 68px);
+    line-height: 1.03;
+    max-width: 15ch;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero p.lead {
+    max-width: 46ch;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+  }
+  .store-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 6px;
+  }
+  .store-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s ease;
+  }
+  .store-badge:hover { transform: translateY(-2px); }
+  .store-badge.primary { background: var(--accent); color: var(--accent-text); }
+  .store-badge.disabled {
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    cursor: default;
+  }
+  .store-badge .lines { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+  .store-badge .lines small { font-size: 11px; font-weight: 600; opacity: 0.85; }
+  .store-badge .lines strong { font-size: 15px; }
+
+  /* device mock */
+  .device-mock {
+    margin-top: 28px;
+    width: min(280px, 70vw);
+    aspect-ratio: 9 / 18.5;
+    border-radius: 34px;
+    background: linear-gradient(160deg, var(--bg-elevated), var(--bg-selected));
+    box-shadow: var(--shadow-lg);
+    padding: 10px;
+    position: relative;
+  }
+  .device-mock .screen {
+    height: 100%;
+    border-radius: 26px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 16%, var(--bg)), var(--bg) 40%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 14px;
+  }
+  .pin-dot {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  .device-mock .sheet {
+    margin-top: auto;
+    background: var(--bg);
+    border-radius: 18px 18px 0 0;
+    padding: 14px;
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.08);
+    font-size: 11px;
+  }
+  .device-mock .sheet .row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .device-mock .sheet .avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-selected); flex: none; }
+  .device-mock .sheet .bar { height: 6px; border-radius: 3px; background: var(--bg-elevated); flex: 1; overflow: hidden; }
+  .device-mock .sheet .bar span { display: block; height: 100%; background: var(--accent); }
+
+  /* ---------- Bento features ---------- */
+  section.features { padding-block: 40px 80px; }
+  .section-head { text-align: center; max-width: 46ch; margin: 0 auto 40px; }
+  .section-head h2 { font-size: clamp(28px, 4vw, 38px); }
+  .section-head p { color: var(--text-secondary); font-size: 17px; margin-top: 10px; }
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+  }
+  .card {
+    background: var(--bg-elevated);
+    border-radius: 22px;
+    padding: 26px;
+    box-shadow: var(--shadow);
+  }
+  .card .glyph {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  .card h3 { font-size: 19px; margin-bottom: 8px; }
+  .card p { color: var(--text-secondary); font-size: 15px; line-height: 1.5; }
+  .card.big { grid-column: span 4; }
+  .card.small { grid-column: span 2; }
+  .card.half { grid-column: span 3; }
+  @media (max-width: 760px) {
+    .bento { grid-template-columns: 1fr; }
+    .card.big, .card.small, .card.half { grid-column: span 1; }
+  }
+
+  .streak-strip { display: flex; gap: 6px; margin-top: 16px; }
+  .streak-strip .day {
+    flex: 1; height: 30px; border-radius: 8px;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .streak-strip .day.on { background: var(--accent); color: var(--accent-text); }
+
+  .rank-list { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .rank-list .r { display: flex; align-items: center; gap: 10px; background: var(--bg); border-radius: 10px; padding: 8px 12px; font-size: 14px; font-weight: 600; }
+  .rank-list .r .medal { width: 20px; text-align: center; }
+  .rank-list .r .km { margin-left: auto; color: var(--text-secondary); font-variant-numeric: tabular-nums; font-weight: 700; }
+
+  /* ---------- Steps ---------- */
+  section.steps { padding-block: 20px 80px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 760px) { .steps-grid { grid-template-columns: 1fr; } }
+  .step { position: relative; padding-top: 8px; }
+  .step .num {
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, var(--bg));
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  .step h3 { font-size: 18px; margin-bottom: 6px; }
+  .step p { color: var(--text-secondary); font-size: 15px; line-height: 1.55; }
+
+  /* ---------- Premium band ---------- */
+  section.premium {
+    margin: 0 20px 80px;
+    max-width: 1040px;
+    margin-inline: auto;
+    border-radius: 28px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 92%, black 6%), var(--accent));
+    color: var(--accent-text);
+    padding: 48px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    box-shadow: var(--shadow-lg);
+  }
+  section.premium .copy { max-width: 46ch; }
+  section.premium h2 { font-size: clamp(24px, 3.4vw, 32px); color: inherit; }
+  section.premium p { margin-top: 10px; opacity: 0.92; font-size: 16px; line-height: 1.5; }
+  section.premium .price {
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif;
+    font-size: 44px;
+    font-weight: 800;
+    text-align: right;
+    flex: none;
+  }
+  section.premium .price small { display: block; font-size: 14px; font-weight: 600; opacity: 0.85; font-family: "Manrope", sans-serif; }
+  @media (max-width: 640px) {
+    section.premium { flex-direction: column; text-align: center; padding: 36px 26px; }
+    section.premium .price { text-align: center; }
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--bg-selected);
+    padding-block: 28px calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+  footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  footer .links { display: flex; gap: 22px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+        <rect width="30" height="30" rx="9" fill="var(--accent)"/>
+        <path d="M15 7c-3.6 0-6.4 2.8-6.4 6.2 0 4.6 6.4 10.3 6.4 10.3s6.4-5.7 6.4-10.3C21.4 9.8 18.6 7 15 7Z" fill="var(--accent-text)"/>
+        <circle cx="15" cy="13.2" r="2.3" fill="var(--accent)"/>
+      </svg>
+      On Tour
+    </div>
+    <div class="nav-links">
+      <a href="#features">Functies</a>
+      <a href="#premium">Premium</a>
+      <a href="privacy.html">Privacybeleid</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">🧭 <b>Nu in interne test</b> &middot; Android</span>
+    <h1>Zie waar je vrienden zijn.<br>Spreek <em>spontaan</em> af.</h1>
+    <p class="lead">On Tour is de live kaart voor je vriendengroep: wie is er vrij, wie zit dichtbij, en wie verdient deze week de meeste kilometers. Geen doom-scrollen — gewoon een appje sturen en gaan.</p>
+    <div class="store-row">
+      <a class="store-badge primary" href="#" aria-label="Download in de Google Play Store">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3.6 2.6 13.9 12 3.6 21.4c-.4-.2-.6-.6-.6-1.1V3.7c0-.5.2-.9.6-1.1Z" fill="var(--accent-text)"/><path d="M14.7 12.8 5.1 22.4l9-4.9 3.4-1.9-2.8-2.8Z" fill="var(--accent-text)" opacity=".75"/><path d="M14.7 11.2 17.5 8.4l3.4 1.9c.9.5.9 1.8 0 2.3l-3.4 1.9-2.8-2.8Z" fill="var(--accent-text)" opacity=".55"/><path d="M14.7 11.2 5.1 1.6l9 4.9 2.8 1.6-2.2 3.1Z" fill="var(--accent-text)" opacity=".9"/></svg>
+        <span class="lines"><small>Binnenkort op</small><strong>Google Play</strong></span>
+      </a>
+      <a class="store-badge disabled" aria-disabled="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--text-secondary)"><path d="M16.5 1c.1 1.1-.3 2.2-1 3-.7.8-1.9 1.5-3 1.4-.1-1.1.4-2.2 1-3C14.3 1.6 15.5 1 16.5 1ZM20 17c-.5 1.2-.8 1.7-1.5 2.7-1 1.4-2.3 3.2-4 3.2-1.5 0-1.9-1-3.9-1s-2.5 1-3.9.9c-1.7 0-2.9-1.6-3.9-3-2.7-3.9-3-8.4-1.3-10.8 1.2-1.7 3-2.7 4.7-2.7 1.7 0 2.8 1 4.2 1 1.3 0 2.2-1 4.2-1 1.5 0 3.1.8 4.2 2.2-3.7 2-3.1 7.3.2 8.5Z"/></svg>
+        <span class="lines"><small>Volgt later</small><strong>App Store</strong></span>
+      </a>
+    </div>
+
+    <div class="device-mock" aria-hidden="true">
+      <div class="screen">
+        <div class="pin-dot" style="top: 34%; left: 58%;"></div>
+        <div class="pin-dot" style="top: 54%; left: 30%; width:26px;height:26px;"></div>
+        <div class="sheet">
+          <strong style="font-family:'Baloo 2',sans-serif;">Vrienden (2)</strong>
+          <div class="row"><div class="avatar"></div> Bart &middot; dichtbij</div>
+          <div class="row"><div class="avatar"></div> Sanne &middot; vrij</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Eén kaart. Je hele vriendengroep.</h2>
+      <p>Geen los appje voor status, een ander voor afspreken en nog een voor wie het hardst zijn best doet — On Tour bundelt het.</p>
+    </div>
+
+    <div class="bento">
+      <div class="card big">
+        <div class="glyph">📍</div>
+        <h3>Live kaart, met een pauzeknop</h3>
+        <p>Zie in real-time waar je vrienden zijn — op de fiets, in de auto of te voet. Zelf even niet zichtbaar? Eén tik en je bent gepauzeerd.</p>
+      </div>
+      <div class="card small">
+        <div class="glyph">🙋</div>
+        <h3>"Ik ben vrij"</h3>
+        <p>Zet je status op vrij en laat een berichtje achter. Vrienden dichtbij krijgen een seintje.</p>
+      </div>
+      <div class="card half">
+        <div class="glyph">📅</div>
+        <h3>Spontane meetups</h3>
+        <p>Stel een plek en tijd voor op de kaart, iedereen reageert met "ik kom" of "misschien".</p>
+      </div>
+      <div class="card half">
+        <div class="glyph">🏆</div>
+        <h3>Levels &amp; prestaties</h3>
+        <p>Elke kilometer telt mee voor XP. Verdien badges als "Op safari" en "McLegende", en houd je streak vast.</p>
+        <div class="streak-strip">
+          <div class="day on">Ma</div><div class="day on">Di</div><div class="day on">Wo</div><div class="day">Do</div><div class="day">Vr</div><div class="day">Za</div><div class="day">Zo</div>
+        </div>
+      </div>
+      <div class="card big">
+        <div class="glyph">🥇</div>
+        <h3>Groepsranglijst</h3>
+        <p>Wie fietste deze week de meeste kilometers? De podiumplekken schuiven live mee.</p>
+        <div class="rank-list">
+          <div class="r"><span class="medal">🥇</span> Sanne <span class="km">62 km</span></div>
+          <div class="r"><span class="medal">🥈</span> Bart <span class="km">48 km</span></div>
+          <div class="r"><span class="medal">🥉</span> Jij <span class="km">41 km</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Binnen twee minuten mee</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Download &amp; maak een account</h3>
+        <p>Alleen een naam en e-mailadres nodig — geen telefoonnummer, geen contacten importeren.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Maak of join een groep</h3>
+        <p>Deel een uitnodigingscode met je vrienden, of stap in met een code die je zelf kreeg.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Zie elkaar, spreek af</h3>
+        <p>De kaart doet de rest. Zet je status, stel een meetup voor, of check gewoon de ranglijst.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="premium" id="premium">
+  <div class="copy">
+    <h2>On Tour Premium</h2>
+    <p>Maak je eigen groep aan (meedoen met een code blijft altijd gratis) en ontgrendel de drie moeilijkste prestaties: Op ontdekkingstocht, Op safari en McLegende.</p>
+  </div>
+  <div class="price">€2,99<small>per maand</small></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; 2026 On Tour</span>
+    <div class="links">
+      <a href="privacy.html">Privacybeleid</a>
+      <a href="mailto:hallo@ontour.rlode.nl">hallo@ontour.rlode.nl</a>
+    </div>
+  </div>
+</footer>
